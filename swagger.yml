@@ -1,0 +1,165 @@
+# swagger.yml
+
+openapi: 3.0.0
+info:
+  title: "Newsletter API"
+  description: "API to manage Newsletter Subscriptions"
+  version: "1.0.0"
+
+servers:
+  - url: "/api"
+
+components:
+  schemas:
+    Subscription:
+      type: object
+      required:
+        - industry
+      properties:
+        industry:
+          type: string
+        source:
+          type: string
+        category:
+          type: string
+  parameters:
+    user_id:
+      name: "user_id"
+      description: "Unique user identifier"
+      in: path
+      required: True
+      schema:
+        type: integer
+    subscription_id:
+      name: "subscription_id"
+      description: "Unique subscription identifier"
+      in: path
+      required: True
+      schema:
+        type: integer
+
+
+paths:
+  /users:
+    get:
+      operationId: "users.get_all"
+      tags:
+        - "Users"
+      summary: "Read the list of all Users"
+      responses:
+        "200":
+          description: "Successfully read users list"
+  /users/{user_id}:
+    get:
+      operationId: "users.get_one"
+      tags:
+        - Users
+      summary: "Read one user"
+      parameters:
+        - $ref: "#/components/parameters/user_id"
+      responses:
+        "200":
+          description: "Successfully read user"
+    patch:
+      operationId: "users.patch"
+      tags:
+        - Users
+      summary: "Update a user's active subscription"
+      parameters:
+        - $ref: "#/components/parameters/user_id"
+      requestBody:
+          description: "Id of inactive subscription to activate, or NULL to deactivate existing"
+          required: True
+          content:
+            application/json:
+              schema:
+                x-body-name: "body"
+                properties:
+                  subscription_id:
+                    description: "unique subscription identifier"
+                    type: integer
+                    nullable: True
+      responses:
+        "204":
+          description: "Successfully updated user's subscription"
+
+  /subscriptions/{user_id}:
+    post:
+      operationId: "subscriptions.create"
+      tags:
+        - Subscriptions
+      summary: "Create a subscription"
+      parameters:
+        - $ref: "#/components/parameters/user_id"
+      requestBody:
+          description: "Subscription to create"
+          required: True
+          content:
+            application/json:
+              schema:
+                x-body-name: "subscription"
+                $ref: "#/components/schemas/Subscription"
+      responses:
+        "201":
+          description: "Successfully created subscription"
+  /subscriptions/{subscription_id}:
+    get:
+      operationId: "subscriptions.get_one"
+      tags:
+        - Subscriptions
+      summary: "Read one subscription"
+      parameters:
+        - $ref: "#/components/parameters/subscription_id"
+      responses:
+        "200":
+          description: "Successfully read subscription"
+    delete:
+      operationId: "subscriptions.delete"
+      tags:
+        - Subscriptions
+      summary: "Delete one subscription"
+      parameters:
+        - $ref: "#/components/parameters/subscription_id"
+      responses:
+        "204":
+          description: "Successfully deleted subscription"
+    put:
+      operationId: "subscriptions.update"
+      tags:
+        - Subscriptions
+      summary: "Update a subscription"
+      parameters:
+        - $ref: "#/components/parameters/subscription_id"
+      requestBody:
+          description: "Subscription to Update"
+          required: True
+          content:
+            application/json:
+              schema:
+                x-body-name: "subscription"
+                $ref: "#/components/schemas/Subscription"
+      responses:
+        "204":
+          description: "Successfully updated subscription"
+  /subscriptions/{user_id}/history:
+    get:
+      operationId: "subscriptions.get_all"
+      tags:
+        - Subscriptions
+      summary: "Read the list of all subscriptions made by user"
+      parameters:
+        - $ref: "#/components/parameters/user_id"
+      responses:
+        "200":
+          description: "Successfully read subscriptions list"
+  /subscriptions/{user_id}/active:
+    get:
+      operationId: "subscriptions.get_active"
+      tags:
+        - Subscriptions
+      summary: "Get User's active Subscription"
+      parameters:
+        - $ref: "#/components/parameters/user_id"
+      responses:
+        "200":
+          description: "Successfully read subscription"
