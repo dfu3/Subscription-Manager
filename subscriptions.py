@@ -14,7 +14,6 @@ def create(user_id, subscription):
     next_sub_id = update_active_sub(user_id)
     return add_new_sub(
         user_id=user_id,
-        subscription_id=next_sub_id,
         industry=subscription.get("industry"),
         source=subscription.get("source"),
         category=subscription.get("category"),

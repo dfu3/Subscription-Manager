@@ -32,12 +32,12 @@ def update_existing_sub(
 
 def add_new_sub(
         user_id,
-        subscription_id,
         industry,
         source=None,
         category=None,
         ):
-    SUBSCRIPTIONS[subscription_id] = {
+    global next_sub_id
+    SUBSCRIPTIONS[next_sub_id] = {
         "industry": industry,
         "source": source,
         "category": category,
@@ -45,17 +45,17 @@ def add_new_sub(
         "created_at": get_timestamp(),
         "updated_at": get_timestamp(),
     }
+    subscription_id = next_sub_id
+    next_sub_id += 1
     return {subscription_id: SUBSCRIPTIONS[subscription_id]}
 
 def update_active_sub(user_id):
-    next_sub_id = len(SUBSCRIPTIONS) + 1
     if user_id in USERS:
         USERS[user_id]["subscription_id"] = next_sub_id
     else:
         abort(
             404, f"User with id {user_id} not found"
         )
-    return next_sub_id
 
 def find_active_sub_by_user(user_id):
     if user_id in USERS:
@@ -151,3 +151,5 @@ SUBSCRIPTIONS = {
         "updated_at": get_timestamp(),
     }
 }
+
+next_sub_id = len(SUBSCRIPTIONS) + 1
