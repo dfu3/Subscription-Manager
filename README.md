@@ -2,7 +2,7 @@
 Flask API to handle user's subscriptions to weekly newsletter
 
 ## Setup
-(after cloning repo)
+(after cloning repo, ensure you have python installed)
 This project installs its dependencies using a python virtual envirenment:
 (Windows OS)
 ```
@@ -10,6 +10,8 @@ PS> python -m venv venv
 PS> .\venv\Scripts\activate
 (venv) PS>
 ```
+( if you get an error when activating the env^ try running the following in an admin shell: `set-executionpolicy remotesigned`) 
+
 After setting up your VE, install dependenices using:
 ```
 (venv) $ python -m pip install -r requirements.txt
