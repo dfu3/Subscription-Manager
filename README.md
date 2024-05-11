@@ -2,7 +2,7 @@
 Flask API to handle user's subscriptions to weekly newsletter
 
 ## Setup
-(after cloning repo, ensure you have python installed)
+(after cloning repo, checkout master branch, and ensure you have python installed)
 This project installs its dependencies using a python virtual envirenment:
 (Windows OS)
 ```
